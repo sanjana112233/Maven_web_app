@@ -30,4 +30,32 @@ pipeline {
             }
         }
     }
+
+    post {
+        success {
+            emailext(
+                to: 'YOUR_GMAIL@gmail.com',
+                subject: "Jenkins Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """The Jenkins build was successful.
+
+Job: ${env.JOB_NAME}
+Build: #${env.BUILD_NUMBER}
+Status: ${currentBuild.currentResult}
+"""
+            )
+        }
+
+        failure {
+            emailext(
+                to: 'sanjanasamala6@gmail.com',
+                subject: "Jenkins Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """The Jenkins build failed.
+
+Job: ${env.JOB_NAME}
+Build: #${env.BUILD_NUMBER}
+Status: ${currentBuild.currentResult}
+"""
+            )
+        }
+    }
 }
